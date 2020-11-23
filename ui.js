@@ -1,4 +1,4 @@
-$(async function() {
+$(async function () {
   // cache some selectors we'll be using quite a bit
   const $body = $("body");
   const $allStoriesList = $("#all-articles-list");
@@ -28,7 +28,7 @@ $(async function() {
    *  If successful, will set up the user instance
    */
 
-  $loginForm.on("submit", async function(evt) {
+  $loginForm.on("submit", async function (evt) {
     evt.preventDefault(); // no page-refresh on submit
 
     // grab the username and password
@@ -49,7 +49,7 @@ $(async function() {
    *  If successful, will setup a new user instance
    */
 
-  $createAccountForm.on("submit", async function(evt) {
+  $createAccountForm.on("submit", async function (evt) {
     evt.preventDefault(); // no page refresh
 
     // grab the required fields
@@ -69,7 +69,7 @@ $(async function() {
    * Log Out Functionality
    */
 
-  $navLogOut.on("click", function() {
+  $navLogOut.on("click", function () {
     // empty out local storage
     localStorage.clear();
     // refresh the page, clearing memory
@@ -81,7 +81,7 @@ $(async function() {
    *
    * */
 
-  $submitForm.on("submit", async function(evt) {
+  $submitForm.on("submit", async function (evt) {
     evt.preventDefault(); // no page refresh
 
     // grab all the info from the form
@@ -99,19 +99,7 @@ $(async function() {
     });
 
     // generate markup for the new story
-    const $li = $(`
-      <li id="${storyObject.storyId}" class="id-${storyObject.storyId}">
-        <span class="star">
-          <i class="far fa-star"></i>
-        </span>
-        <a class="article-link" href="${url}" target="a_blank">
-          <strong>${title}</strong>
-        </a>
-        <small class="article-hostname ${hostName}">(${hostName})</small>
-        <small class="article-author">by ${author}</small>
-        <small class="article-username">posted by ${username}</small>
-      </li>
-    `);
+    const $li = generatestoryHTML(storyObject, true);
     $allStoriesList.prepend($li);
 
     // hide the form and reset it
@@ -124,7 +112,7 @@ $(async function() {
    *
    */
 
-  $(".articles-container").on("click", ".star", async function(evt) {
+  $(".articles-container").on("click", ".star", async function (evt) {
     if (currentUser) {
       const $tgt = $(evt.target);
       const $closestLi = $tgt.closest("li");
@@ -148,7 +136,7 @@ $(async function() {
    * Event Handler for Clicking Login
    */
 
-  $navLogin.on("click", function() {
+  $navLogin.on("click", function () {
     // Show the Login and Create Account Forms
     $loginForm.slideToggle();
     $createAccountForm.slideToggle();
@@ -159,7 +147,7 @@ $(async function() {
    * Event Handler for On Your Profile
    */
 
-  $navUserProfile.on("click", function() {
+  $navUserProfile.on("click", function () {
     // hide everything
     hideElements();
     // except the user profile
@@ -170,7 +158,7 @@ $(async function() {
    * Event Handler for Navigation Submit
    */
 
-  $navSubmit.on("click", function() {
+  $navSubmit.on("click", function () {
     if (currentUser) {
       hideElements();
       $allStoriesList.show();
@@ -182,7 +170,7 @@ $(async function() {
    * Event handler for Navigation to Favorites
    */
 
-  $body.on("click", "#nav-favorites", function() {
+  $body.on("click", "#nav-favorites", function () {
     hideElements();
     if (currentUser) {
       generateFaves();
@@ -194,7 +182,7 @@ $(async function() {
    * Event handler for Navigation to Homepage
    */
 
-  $body.on("click", "#nav-all", async function() {
+  $body.on("click", "#nav-all", async function () {
     hideElements();
     await generateStories();
     $allStoriesList.show();
@@ -204,7 +192,7 @@ $(async function() {
    * Event handler for Navigation to My Stories
    */
 
-  $body.on("click", "#nav-my-stories", function() {
+  $body.on("click", "#nav-my-stories", function () {
     hideElements();
     if (currentUser) {
       $userProfile.hide();
@@ -217,7 +205,7 @@ $(async function() {
    * Event Handler for Deleting a Single Story
    */
 
-  $ownStories.on("click", ".trash-can", async function(evt) {
+  $ownStories.on("click", ".trash-can", async function (evt) {
     // get the Story's ID
     const $closestLi = $(evt.target).closest("li");
     const storyId = $closestLi.attr("id");
